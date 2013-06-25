@@ -23,36 +23,36 @@
 {
     id testProgram = [self buildTestProgramStackFromButtonsPressed:@"3,5,6,7,+,*,-"];
     NSString* expectedDescription = @"3-5*(6+7)";
-    double calculation = 3-5*(6+7);
+    double expectedValue = 3-5*(6+7);
     
-    [self runTestForProgram:testProgram expectedDescription:expectedDescription calculation:calculation];
+    [self runTestForProgram:testProgram expectedDescription:expectedDescription expectedValue:expectedValue];
 }
 
 -(void)testProgramB
 {
     id testProgram = [self buildTestProgramStackFromButtonsPressed:@"3,5,+,sqrt"];
     NSString* expectedDescription = @"sqrt(3+5)";
-    double calculation = sqrt(3+5);
+    double expectedValue = sqrt(3+5);
     
-    [self runTestForProgram:testProgram expectedDescription:expectedDescription calculation:calculation];
+    [self runTestForProgram:testProgram expectedDescription:expectedDescription expectedValue:expectedValue];
 }
 
 -(void)testProgramC
 {
     id testProgram = [self buildTestProgramStackFromButtonsPressed:@"3,sqrt,sqrt"];
     NSString* expectedDescription = @"sqrt(sqrt(3))";
-    double calculation = sqrt(sqrt(3));
+    double expectedValue = sqrt(sqrt(3));
     
-    [self runTestForProgram:testProgram expectedDescription:expectedDescription calculation:calculation];
+    [self runTestForProgram:testProgram expectedDescription:expectedDescription expectedValue:expectedValue];
 }
 
 -(void)testProgramD
 {
     id testProgram = [self buildTestProgramStackFromButtonsPressed:@"3,5,sqrt,+"];
     NSString* expectedDescription = @"3+sqrt(5)";
-    double calculation = 3+sqrt(5);
+    double expectedValue = 3+sqrt(5);
     
-    [self runTestForProgram:testProgram expectedDescription:expectedDescription calculation:calculation];
+    [self runTestForProgram:testProgram expectedDescription:expectedDescription expectedValue:expectedValue];
 }
 
 -(void)testProgramE
@@ -62,10 +62,10 @@
     NSNumber* r = [NSNumber numberWithDouble:5];
     NSDictionary* variableValues = [NSDictionary dictionaryWithObject:r forKey:@"r"];
     
-    double calculation = M_PI*r.doubleValue*r.doubleValue;
+    double expectedValue = M_PI*r.doubleValue*r.doubleValue;
     
-    [self runTestForProgram:testProgram expectedDescription:expectedDescription calculation:0];
-    [self runTestForResult:testProgram calculation:calculation usingVariableValues:variableValues];
+    [self runTestForProgram:testProgram expectedDescription:expectedDescription expectedValue:0];
+    [self runTestForResult:testProgram expectedValue:expectedValue usingVariableValues:variableValues];
 }
 
 -(void)testProgramF
@@ -77,17 +77,17 @@
     NSMutableDictionary* variableValues = [NSMutableDictionary dictionaryWithObject:a forKey:@"a"];
     [variableValues setObject:b forKey:@"b"];
     
-    double calculation = sqrt(a.doubleValue*a.doubleValue+b.doubleValue*b.doubleValue);
+    double expectedValue = sqrt(a.doubleValue*a.doubleValue+b.doubleValue*b.doubleValue);
     
-    [self runTestForProgram:testProgram expectedDescription:expectedDescription calculation:0];
-    [self runTestForResult:testProgram calculation:calculation usingVariableValues:variableValues];
+    [self runTestForProgram:testProgram expectedDescription:expectedDescription expectedValue:0];
+    [self runTestForResult:testProgram expectedValue:expectedValue usingVariableValues:variableValues];
 }
 
 
--(void)runTestForProgram:(id)testProgram expectedDescription:(NSString*)expectedDescription calculation:(double)calculation
+-(void)runTestForProgram:(id)testProgram expectedDescription:(NSString*)expectedDescription expectedValue:(double)expectedValue
 {
     [self runTestForDescription:testProgram expectedDescription:expectedDescription];
-    [self runTestForResult:testProgram calculation:calculation];
+    [self runTestForResult:testProgram expectedValue:expectedValue];
 }
 
 -(void)runTestForDescription:(id)testProgram expectedDescription:(NSString*)expectedDescription
@@ -96,16 +96,16 @@
     STAssertEqualObjects(description, expectedDescription, nil);
 }
 
--(void)runTestForResult:(id)testProgram calculation:(double)calculation
+-(void)runTestForResult:(id)testProgram expectedValue:(double)expectedValue
 {
-    NSNumber* expectedResult = [NSNumber numberWithDouble:calculation];
+    NSNumber* expectedResult = [NSNumber numberWithDouble:expectedValue];
     NSNumber* result = [CalculatorBrain runProgram:testProgram];
     STAssertEqualObjects(result, expectedResult, nil);
 }
 
--(void)runTestForResult:(id)testProgram calculation:(double)calculation usingVariableValues:(NSDictionary *)variableValues
+-(void)runTestForResult:(id)testProgram expectedValue:(double)expectedValue usingVariableValues:(NSDictionary *)variableValues
 {
-    NSNumber* expectedResult = [NSNumber numberWithDouble:calculation];
+    NSNumber* expectedResult = [NSNumber numberWithDouble:expectedValue];
     NSNumber* result = [CalculatorBrain runProgram:testProgram usingVariableValues:variableValues];
     STAssertEqualObjects(result, expectedResult, nil);
 }

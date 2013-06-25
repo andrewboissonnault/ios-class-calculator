@@ -16,6 +16,7 @@
 - (void)clearStack;
 - (void)pushVariable:(NSString *)variable;
 - (void)removeLastObjectFromProgramStack;
+- (void)pushOperation:(NSString*)operation;
 
 @property (nonatomic, readonly) NSArray *variablesUsedInProgram;
 @property (nonatomic, readonly) id program;
