@@ -57,20 +57,24 @@
 //Update variable display with the variable values.
 - (void)updateVariableDisplay
 {
-    NSString *update = @"";
-    for(int i=0; i<[self.brain.variablesUsedInProgram count]; i++) {   //Iterates over all currently used variables.
-        NSString *variable = [self.brain.variablesUsedInProgram objectAtIndex:i];
-        NSString *value;
-        NSNumber *num = [self.testVariableValues objectForKey:variable];
-        if(num) {  //If the variable has been set
-            value = [num stringValue];
-        }
-        else {
-            value = @"0";
-        }
-        update = [[[[update stringByAppendingString:variable] stringByAppendingString:@" = "] stringByAppendingString:value] stringByAppendingString:@"    "];
+    NSString *variableStringToDisplayAccumulator = @"";
+    for(NSString* variable in self.brain.variablesUsedInProgram) {
+        NSString *value = [self getValueForVariableName:variable];
+        NSString *variableString = [NSString stringWithFormat:@"%@ = %@    ", variable, value];
+        variableStringToDisplayAccumulator = [variableStringToDisplayAccumulator stringByAppendingString:variableString];
     }
-    self.variableDisplay.text = update;
+    self.variableDisplay.text = variableStringToDisplayAccumulator;
+}
+
+- (NSString*)getValueForVariableName:(NSString*)variable
+{
+    NSNumber *num = [self.testVariableValues objectForKey:variable];
+    if(num) {
+        return [num stringValue];
+    }
+    else {
+        return @"0";
+    }
 }
 
 
